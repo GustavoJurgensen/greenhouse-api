@@ -2,7 +2,7 @@ package com.cythr.greenhouseapi.controllers;
 
 import com.cythr.greenhouseapi.models.Greenhouse;
 import com.cythr.greenhouseapi.models.GreenhouseData;
-import com.cythr.greenhouseapi.models.auxiliary.*;
+import com.cythr.greenhouseapi.models.ParseGreenhouseData;
 import com.cythr.greenhouseapi.repositories.GreenhouseDataRepository;
 import com.cythr.greenhouseapi.repositories.GreenhouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,31 +41,31 @@ public class GreenhouseController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @GetMapping(value = "/data/humidity/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<HumidityAux>> greenhouseDataHumidityListByTime(@PathVariable (value = "addr") String addr,
-                                                                              @PathVariable (value = "date") String date){
+    public ResponseEntity<List<ParseGreenhouseData>> greenhouseDataHumidityListByTime(@PathVariable (value = "addr") String addr,
+                                                                                      @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<HumidityAux> list = greenhouseDataRepository.findHumidityByDate(tm,addr);
+        List<ParseGreenhouseData> list = greenhouseDataRepository.findHumidityByDate(tm,addr);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @GetMapping(value = "/data/temperature/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<TemperatureAux>> greenhouseDataTemperatureListByTime(@PathVariable (value = "addr") String addr,
-                                                                                 @PathVariable (value = "date") String date){
+    public ResponseEntity<List<ParseGreenhouseData>> greenhouseDataTemperatureListByTime(@PathVariable (value = "addr") String addr,
+                                                                                         @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<TemperatureAux> list = greenhouseDataRepository.findTemperatureByDate(tm,addr);
+        List<ParseGreenhouseData> list = greenhouseDataRepository.findTemperatureByDate(tm,addr);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @GetMapping(value = "/data/moisture/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<MoistureAux>> greenhouseDataMoistureListByTime(@PathVariable (value = "addr") String addr,
-                                                                                    @PathVariable (value = "date") String date){
+    public ResponseEntity<List<ParseGreenhouseData>> greenhouseDataMoistureListByTime(@PathVariable (value = "addr") String addr,
+                                                                                      @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<MoistureAux> list = greenhouseDataRepository.findMoistureByDate(tm,addr);
+        List<ParseGreenhouseData> list = greenhouseDataRepository.findMoistureByDate(tm,addr);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @GetMapping(value = "/data/luminosity/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<LuminosityAux>> greenhouseDataLuminosityListByTime(@PathVariable (value = "addr") String addr,
-                                                                                    @PathVariable (value = "date") String date){
+    public ResponseEntity<List<ParseGreenhouseData>> greenhouseDataLuminosityListByTime(@PathVariable (value = "addr") String addr,
+                                                                                        @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<LuminosityAux> list = greenhouseDataRepository.findLuminosityByDate(tm,addr);
+        List<ParseGreenhouseData> list = greenhouseDataRepository.findLuminosityByDate(tm,addr);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
