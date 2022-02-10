@@ -10,9 +10,14 @@ public class ParseGreenhouseDataString {
     private Float indoor;
     private Float outdoor;
 
-    public ParseGreenhouseDataString(Date date, Float indoor, Float outdoor) {
+    public ParseGreenhouseDataString(Date date, Float indoor, Float outdoor, String datebase) {
         TimeZone tz= TimeZone.getTimeZone("GMT-3:00");
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy \nHH:mm:ss");
+        DateFormat dateFormat;
+        if(datebase.equals("oneDay")){
+            dateFormat = new SimpleDateFormat("HH:mm:ss");
+        }else{
+            dateFormat = new SimpleDateFormat("dd/MM/yy");
+        }
         dateFormat.setTimeZone(tz);
         String sDate = dateFormat.format(date);
         this.date = sDate;

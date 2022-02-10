@@ -42,49 +42,41 @@ public class GreenhouseController {
         List<GreenhouseData> list = (List<GreenhouseData>)greenhouseDataRepository.findAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    private ResponseEntity<List<ParseGreenhouseDataString>> getListResponseEntity(@PathVariable("date") String date, List<ParseGreenhouseData> list) {
+        List<ParseGreenhouseDataString> l = new ArrayList<>();
+        for(ParseGreenhouseData gh : list){
+            l.add(new ParseGreenhouseDataString( gh.getDate(),gh.getIndoor(),gh.getOutdoor(),date));
+        }
+        return new ResponseEntity<>(l, HttpStatus.OK);
+    }
     @GetMapping(value = "/data/humidity/addr/{addr}/date/{date}", produces = "application/json")
     public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataHumidityListByTime(@PathVariable (value = "addr") String addr,
                                                                                       @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
         List<ParseGreenhouseData> list = greenhouseDataRepository.findHumidityByDate(tm,addr);
-        List<ParseGreenhouseDataString> l = new ArrayList<>();
-        for(ParseGreenhouseData gh : list){
-            l.add(new ParseGreenhouseDataString( gh.getDate(),gh.getIndoor(),gh.getOutdoor()));
-        }
-        return new ResponseEntity<>(l, HttpStatus.OK);
+        return getListResponseEntity(date, list);
     }
     @GetMapping(value = "/data/temperature/addr/{addr}/date/{date}", produces = "application/json")
     public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataTemperatureListByTime(@PathVariable (value = "addr") String addr,
                                                                                          @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
         List<ParseGreenhouseData> list = greenhouseDataRepository.findTemperatureByDate(tm,addr);
-        List<ParseGreenhouseDataString> l = new ArrayList<>();
-        for(ParseGreenhouseData gh : list){
-            l.add(new ParseGreenhouseDataString( gh.getDate(),gh.getIndoor(),gh.getOutdoor()));
-        }
-        return new ResponseEntity<>(l, HttpStatus.OK);
+        return getListResponseEntity(date, list);
     }
     @GetMapping(value = "/data/moisture/addr/{addr}/date/{date}", produces = "application/json")
     public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataMoistureListByTime(@PathVariable (value = "addr") String addr,
                                                                                       @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
         List<ParseGreenhouseData> list = greenhouseDataRepository.findMoistureByDate(tm,addr);
-        List<ParseGreenhouseDataString> l = new ArrayList<>();
-        for(ParseGreenhouseData gh : list){
-            l.add(new ParseGreenhouseDataString( gh.getDate(),gh.getIndoor(),gh.getOutdoor()));
-        }
-        return new ResponseEntity<>(l, HttpStatus.OK);
+        return getListResponseEntity(date, list);
     }
     @GetMapping(value = "/data/luminosity/addr/{addr}/date/{date}", produces = "application/json")
     public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataLuminosityListByTime(@PathVariable (value = "addr") String addr,
                                                                                         @PathVariable (value = "date") String date){
         Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
         List<ParseGreenhouseData> list = greenhouseDataRepository.findLuminosityByDate(tm,addr);
-        List<ParseGreenhouseDataString> l = new ArrayList<>();
-        for(ParseGreenhouseData gh : list){
-            l.add(new ParseGreenhouseDataString( gh.getDate(),gh.getIndoor(),gh.getOutdoor()));
-        }
-        return new ResponseEntity<>(l, HttpStatus.OK);
+        return getListResponseEntity(date, list);
     }
 
 
