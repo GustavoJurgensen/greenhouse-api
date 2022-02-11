@@ -20,6 +20,19 @@ public class Greenhouse implements Serializable {
     private Float tHumidity;
     private Float tMoisture;
 
+    public Greenhouse() {
+    }
+
+    public Greenhouse(Long id, String cropType, String addr, Float tLuminosity, Float tTemperature, Float tHumidity, Float tMoisture) {
+        this.id = id;
+        this.cropType = cropType;
+        this.addr = addr;
+        this.tLuminosity = tLuminosity;
+        this.tTemperature = tTemperature;
+        this.tHumidity = tHumidity;
+        this.tMoisture = tMoisture;
+    }
+
     public Long getId() {
         return id;
     }
