@@ -128,6 +128,11 @@ public class GreenhouseController {
         greenhouseDataRepository.deleteByAddr(addr);
         return new ResponseEntity<>(gh, HttpStatus.OK);
     }
+    @DeleteMapping(value = "/id/{id}", produces = "application/json")
+    public ResponseEntity<Greenhouse> deleteById(@PathVariable (value = "id") String id){
+        greenhouseRepository.deleteById(Long.valueOf(id));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
