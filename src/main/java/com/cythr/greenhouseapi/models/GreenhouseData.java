@@ -1,10 +1,13 @@
 package com.cythr.greenhouseapi.models;
 
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Builder
 public class GreenhouseData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +24,20 @@ public class GreenhouseData {
     private Float exHumidity;
     private Float exWind;
 
+    public GreenhouseData() {}
+
+    public GreenhouseData(Long id, String addr, Date date, Float luminosity, Float temperature, Float humidity, Float moisture, Float exTemperature, Float exHumidity, Float exWind) {
+        this.id = id;
+        this.addr = addr;
+        this.date = date;
+        this.Luminosity = luminosity;
+        this.Temperature = temperature;
+        this.Humidity = humidity;
+        this.Moisture = moisture;
+        this.exTemperature = exTemperature;
+        this.exHumidity = exHumidity;
+        this.exWind = exWind;
+    }
 
     public Long getId() {
         return id;

@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.cythr.greenhouseapi.constants.EnumDates.getDate;
 
@@ -92,21 +93,47 @@ public class GreenhouseController {
         greenhouseData.setDate(tm);
         GreenhouseData gh = greenhouseDataRepository.save(greenhouseData);
         return new ResponseEntity<>(gh, HttpStatus.OK);
-    }
+        }
 
 
     @PutMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Greenhouse> update(@RequestBody Greenhouse greenhouse){
-        Greenhouse gh = greenhouseRepository.save(greenhouse);
-        return new ResponseEntity<>(gh, HttpStatus.OK);
+    public ResponseEntity<Greenhouse> update(@RequestBody Greenhouse greenhouse) {
+        if (greenhouse == null || greenhouse.getId() == null) {
+            throw new InvalidRequestException("Greenhouse object or ID must not be null!");
+        }
+        Optional<Greenhouse> gh = greenhouseRepository.findById(greenhouse.getId());
+        if (gh==null || !gh.isPresent()) {
+            throw new InvalidRequestException("Greenhouse Not Found!");
+        }
+        Greenhouse existingGh = gh.get();
+        existingGh.setAddr(greenhouse.getAddr());
+        existingGh.setCropType(greenhouse.getCropType());
+        existingGh.settHumidity(greenhouse.gettHumidity());
+        existingGh.settLuminosity(greenhouse.gettLuminosity());
+        existingGh.settMoisture(greenhouse.gettMoisture());
+        existingGh.settTemperature(greenhouse.gettTemperature());
+
+        Greenhouse ghret = greenhouseRepository.save(existingGh);
+        return new ResponseEntity<>(ghret, HttpStatus.OK);
     }
 
 
     @DeleteMapping(value = "/{addr}", produces = "application/json")
     public ResponseEntity<Greenhouse> deleteByAddr(@PathVariable (value = "addr") String addr){
         Greenhouse gh = greenhouseRepository.findByAddr(addr);
+        if(gh == null){
+            throw new InvalidRequestException("Greenhouse Not Found!");
+        }
         greenhouseRepository.deleteByAddr(addr);
         greenhouseDataRepository.deleteByAddr(addr);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(gh, HttpStatus.OK);
+    }
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public static class InvalidRequestException extends RuntimeException {
+        public InvalidRequestException(String s) {
+            super(s);
+        }
     }
 }

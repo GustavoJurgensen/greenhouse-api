@@ -1,5 +1,7 @@
 package com.cythr.greenhouseapi.models;
 
+import lombok.Builder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +10,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Builder
 public class Greenhouse implements Serializable {
 
     @Id
