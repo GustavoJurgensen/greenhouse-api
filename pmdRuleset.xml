@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+         http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+    <description>
+        This ruleset checks my code for bad stuff
+    </description>
+    <rule ref="category/java/errorprone.xml"/>
+    <rule ref="category/java/multithreading.xml"/>
+    <rule ref="category/java/bestpractices.xml"/>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="LongVariable"/>
+        <exclude name="ShortVariable"/>
+    </rule>
+    <rule ref="category/java/performance.xml"/>
+    <rule ref="category/java/design.xml">
+        <exclude name="DataClass"/>
+    </rule>
+    <rule ref="category/java/documentation.xml"/>
+
+    <!-- Rules Configuration -->
+    <rule ref="category/java/design.xml/CyclomaticComplexity" >
+        <priority>1</priority>
+        <properties>
+            <property name="classReportLevel">
+                <value>250</value>
+            </property>
+            <property name="methodReportLevel">
+                <value>11</value>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+        <properties>
+            <property name="skipAnnotations" value="true" />
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/ExcessiveParameterList">
+        <properties>
+            <property name="minimum" value="11.0" />
+        </properties>
+    </rule>
+    <rule ref="category/java/documentation.xml/CommentSize">
+        <properties>
+            <property name="maxLines" value="13" />
+            <property name="maxLineLength" value="100" />
+        </properties>
+    </rule>
+    <rule ref="category/java/errorprone.xml/BeanMembersShouldSerialize">
+        <properties>
+            <property name="ignoredAnnotations"
+                      value="org.springframework.beans.factory.annotation.Autowired" />
+            <property name="prefix" value="" />
+        </properties>
+    </rule>
+
+</ruleset>

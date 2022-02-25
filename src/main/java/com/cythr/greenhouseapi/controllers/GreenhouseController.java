@@ -1,9 +1,6 @@
 package com.cythr.greenhouseapi.controllers;
 
 import com.cythr.greenhouseapi.models.Greenhouse;
-import com.cythr.greenhouseapi.models.GreenhouseData;
-import com.cythr.greenhouseapi.models.ParseGreenhouseData;
-import com.cythr.greenhouseapi.models.ParseGreenhouseDataString;
 import com.cythr.greenhouseapi.repositories.GreenhouseDataRepository;
 import com.cythr.greenhouseapi.repositories.GreenhouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,101 +8,72 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.cythr.greenhouseapi.constants.EnumDates.getDate;
-
+/**
+ * Controller to Greenhouse Requests HTTP
+ */
 @RestController
-@RequestMapping(value = "/greenhouse")
+@RequestMapping("/greenhouse")
+@SuppressWarnings("PMD.AtLeastOneConstructor")
 public class GreenhouseController {
-
+    /**
+     * Reference Greenhouse table
+     */
     @Autowired
     private GreenhouseRepository greenhouseRepository;
+    /**
+     * Reference Greenhouse Data table
+     */
     @Autowired
     private GreenhouseDataRepository greenhouseDataRepository;
 
+    /**
+     * Get all data from greenhouse table
+     * @return List<Greenhouse>
+     */
     @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<List<Greenhouse>> greenhouseList(){
-        List<Greenhouse> list = (List<Greenhouse>)greenhouseRepository.findAll();
+    public ResponseEntity<List<Greenhouse>> getGreenhouseList(){
+        final List<Greenhouse> list = (List<Greenhouse>)greenhouseRepository.findAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+    /**
+     * Get greenhouse by address from greenhouse table
+     * @return Greenhouse
+     */
     @GetMapping(value = "/{addr}", produces = "application/json")
-    public ResponseEntity<Greenhouse> findByAddr(@PathVariable (value = "addr") String addr){
-        Greenhouse gh = greenhouseRepository.findByAddr(addr);
-        return new ResponseEntity<>(gh, HttpStatus.OK);
-    }
-    @GetMapping(value = "/data/", produces = "application/json")
-    public ResponseEntity<List<GreenhouseData>> greenhouseDataList(){
-        List<GreenhouseData> list = (List<GreenhouseData>)greenhouseDataRepository.findAll();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+    public ResponseEntity<Greenhouse> findByAddr(@PathVariable ("addr") final String addr){
+        final Greenhouse greenhouse = greenhouseRepository.findByAddr(addr);
+        return new ResponseEntity<>(greenhouse, HttpStatus.OK);
     }
 
-    private ResponseEntity<List<ParseGreenhouseDataString>> getListResponseEntity(@PathVariable("date") String date, List<ParseGreenhouseData> list) {
-        List<ParseGreenhouseDataString> l = new ArrayList<>();
-        for(ParseGreenhouseData gh : list){
-            l.add(new ParseGreenhouseDataString( gh.getDate(),gh.getIndoor(),gh.getOutdoor(),date));
-        }
-        return new ResponseEntity<>(l, HttpStatus.OK);
-    }
-    @GetMapping(value = "/data/humidity/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataHumidityListByTime(@PathVariable (value = "addr") String addr,
-                                                                                      @PathVariable (value = "date") String date){
-        Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<ParseGreenhouseData> list = greenhouseDataRepository.findHumidityByDate(tm,addr);
-        return getListResponseEntity(date, list);
-    }
-    @GetMapping(value = "/data/temperature/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataTemperatureListByTime(@PathVariable (value = "addr") String addr,
-                                                                                         @PathVariable (value = "date") String date){
-        Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<ParseGreenhouseData> list = greenhouseDataRepository.findTemperatureByDate(tm,addr);
-        return getListResponseEntity(date, list);
-    }
-    @GetMapping(value = "/data/moisture/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataMoistureListByTime(@PathVariable (value = "addr") String addr,
-                                                                                      @PathVariable (value = "date") String date){
-        Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<ParseGreenhouseData> list = greenhouseDataRepository.findMoistureByDate(tm,addr);
-        return getListResponseEntity(date, list);
-    }
-    @GetMapping(value = "/data/luminosity/addr/{addr}/date/{date}", produces = "application/json")
-    public ResponseEntity<List<ParseGreenhouseDataString>> greenhouseDataLuminosityListByTime(@PathVariable (value = "addr") String addr,
-                                                                                        @PathVariable (value = "date") String date){
-        Timestamp tm = new Timestamp(new Date().getTime()- getDate(date));
-        List<ParseGreenhouseData> list = greenhouseDataRepository.findLuminosityByDate(tm,addr);
-        return getListResponseEntity(date, list);
-    }
-
-
+    /**
+     * Insert object on table greenhouse
+     * @param greenhouse Greenhouse object
+     * @return Greenhouse
+     */
     @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Greenhouse> add(@RequestBody Greenhouse greenhouse){
-        Greenhouse gh = greenhouseRepository.save(greenhouse);
-        return new ResponseEntity<>(gh, HttpStatus.OK);
+    public ResponseEntity<Greenhouse> add(@RequestBody final Greenhouse greenhouse){
+        return new ResponseEntity<>(greenhouseRepository.save(greenhouse), HttpStatus.OK);
     }
-    @PostMapping(value = "/data/", produces = "application/json")
-    public ResponseEntity<GreenhouseData> add(@RequestBody GreenhouseData greenhouseData){
-        Date date = new Date();
-        Timestamp tm = new Timestamp(date.getTime());
-        greenhouseData.setDate(tm);
-        GreenhouseData gh = greenhouseDataRepository.save(greenhouseData);
-        return new ResponseEntity<>(gh, HttpStatus.OK);
-        }
 
-
+    /**
+     * Update object on table greenhouse
+     * @param greenhouse Greenhouse object
+     * @return Greenhouse
+     */
+    @SuppressWarnings("PMD.LawOfDemeter")
     @PutMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Greenhouse> update(@RequestBody Greenhouse greenhouse) {
+    public ResponseEntity<Greenhouse> update(@RequestBody final Greenhouse greenhouse) {
         if (greenhouse == null || greenhouse.getId() == null) {
             throw new InvalidRequestException("Greenhouse object or ID must not be null!");
         }
-        Optional<Greenhouse> gh = greenhouseRepository.findById(greenhouse.getId());
-        if (gh==null || !gh.isPresent()) {
+        final Optional<Greenhouse> lGreenhouse = greenhouseRepository.findById(greenhouse.getId());
+        if (!lGreenhouse.isPresent()) {
             throw new InvalidRequestException("Greenhouse Not Found!");
         }
-        Greenhouse existingGh = gh.get();
+        Greenhouse existingGh = lGreenhouse.get();
         existingGh.setAddr(greenhouse.getAddr());
         existingGh.setCropType(greenhouse.getCropType());
         existingGh.settHumidity(greenhouse.gettHumidity());
@@ -113,32 +81,52 @@ public class GreenhouseController {
         existingGh.settMoisture(greenhouse.gettMoisture());
         existingGh.settTemperature(greenhouse.gettTemperature());
 
-        Greenhouse ghret = greenhouseRepository.save(existingGh);
-        return new ResponseEntity<>(ghret, HttpStatus.OK);
+        return new ResponseEntity<>(greenhouseRepository.save(existingGh), HttpStatus.OK);
     }
 
-
+    /**
+     * Delete Greenhouse and your soons from every table
+     * @param addr Greenhouse addr
+     * @return Greenhouse
+     */
     @DeleteMapping(value = "/{addr}", produces = "application/json")
-    public ResponseEntity<Greenhouse> deleteByAddr(@PathVariable (value = "addr") String addr){
-        Greenhouse gh = greenhouseRepository.findByAddr(addr);
-        if(gh == null){
+    public ResponseEntity<Greenhouse> deleteByAddr(@PathVariable ("addr") final String addr){
+        final Greenhouse greenhouse = greenhouseRepository.findByAddr(addr);
+        if(greenhouse == null){
             throw new InvalidRequestException("Greenhouse Not Found!");
         }
         greenhouseRepository.deleteByAddr(addr);
         greenhouseDataRepository.deleteByAddr(addr);
-        return new ResponseEntity<>(gh, HttpStatus.OK);
+        return new ResponseEntity<>(greenhouse, HttpStatus.OK);
     }
+
+    /**
+     * Delete greenhouse by ID
+     * @param id Greenhouse ID
+     * @return Greenhouse
+     */
     @DeleteMapping(value = "/id/{id}", produces = "application/json")
-    public ResponseEntity<Greenhouse> deleteById(@PathVariable (value = "id") String id){
+    public ResponseEntity<Greenhouse> deleteById(@PathVariable ("id") final String id){
+        final Optional<Greenhouse> greenhouse = greenhouseRepository.findById(Long.valueOf(id));
+        if(!greenhouse.isPresent()){
+            throw new InvalidRequestException("Greenhouse Not Found!");
+        }
         greenhouseRepository.deleteById(Long.valueOf(id));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    /**
+     * Return Bad response to wrong http requests
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public static class InvalidRequestException extends RuntimeException {
-        public InvalidRequestException(String s) {
-            super(s);
+        private static final long serialVersionUID = 50L;
+        /**
+         * Constructor for Bad Requests
+         * @param str Message
+         */
+        public InvalidRequestException(final String str) {
+            super(str);
         }
     }
 }

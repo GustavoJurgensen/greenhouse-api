@@ -11,21 +11,48 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * CrudRepository to Greenhouse Data Table
+ */
 @Repository
 public interface GreenhouseDataRepository extends CrudRepository<GreenhouseData, Long> {
 
-    @Query(value = "SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.Humidity, gh.exHumidity) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
+    /**
+     * @param date date of begin period
+     * @param addr greenhouse address
+     * @return a List of ParseGreenhouseData with all humidity data since @date
+     */
+    @Query("SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.humidity, gh.exHumidity) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
     List<ParseGreenhouseData> findHumidityByDate(@Param("date")Date date, @Param("addr") String addr);
 
-    @Query(value = "SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.Temperature, gh.exTemperature) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
+    /**
+     * @param date date of begin period
+     * @param addr greenhouse address
+     * @return a List of ParseGreenhouseData with all temperature data since @date
+     */
+    @Query("SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.temperature, gh.exTemperature) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
     List<ParseGreenhouseData> findTemperatureByDate(@Param("date")Date date, @Param("addr") String addr);
 
-    @Query(value = "SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.Luminosity) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
+    /**
+     * @param date date of begin period
+     * @param addr greenhouse address
+     * @return a List of ParseGreenhouseData with all luminosity data since @date
+     */
+    @Query("SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.luminosity) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
     List<ParseGreenhouseData> findLuminosityByDate(@Param("date")Date date, @Param("addr") String addr);
 
-    @Query(value = "SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.Moisture) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
+    /**
+     * @param date date of begin period
+     * @param addr greenhouse address
+     * @return a List of ParseGreenhouseData with all moisture data since @date
+     */
+    @Query("SELECT new com.cythr.greenhouseapi.models.ParseGreenhouseData(gh.date, gh.moisture) FROM GreenhouseData gh WHERE gh.date >= ?1 AND gh.addr = ?2")
     List<ParseGreenhouseData> findMoistureByDate(@Param("date")Date date, @Param("addr") String addr);
 
+    /**
+     * Delete by greenhouse address
+     * @param addr greenhouse address
+     */
     @Transactional
-    void deleteByAddr(@Param("addr") String addr);
+    void deleteByAddr( String addr);
 }

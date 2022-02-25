@@ -5,19 +5,42 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+/**
+ * Class to rescue specific data columns from database
+ */
 public class ParseGreenhouseData {
+    /**
+     * date of data acquisition(TIMESTAMP)
+     */
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    /**
+     * indoor data
+     */
     private Float indoor;
+    /**
+     * outdoor data
+     */
     private Float outdoor;
 
-    public ParseGreenhouseData(Date date, Float indoor) {
+    /**
+     * Constructor to rescue only date and indoor data
+     * @param date Actual date
+     * @param indoor Indoor data
+     */
+    public ParseGreenhouseData(final Date date, final Float indoor) {
         this.date = date;
         this.indoor = indoor;
     }
 
-    public ParseGreenhouseData(Date date, Float indoor, Float outdoor) {
+    /**
+     * Constructor to rescue date, indoor and outdoor data
+     * @param date Actual date
+     * @param indoor Indoor data
+     * @param outdoor Outdoor data
+     */
+    public ParseGreenhouseData(final Date date, final Float indoor, final Float outdoor) {
         this.date = date;
         this.indoor = indoor;
         this.outdoor = outdoor;
@@ -27,7 +50,7 @@ public class ParseGreenhouseData {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
@@ -35,7 +58,7 @@ public class ParseGreenhouseData {
         return indoor;
     }
 
-    public void setIndoor(Float indoor) {
+    public void setIndoor(final Float indoor) {
         this.indoor = indoor;
     }
 
@@ -43,7 +66,7 @@ public class ParseGreenhouseData {
         return outdoor;
     }
 
-    public void setOutdoor(Float outdoor) {
+    public void setOutdoor(final Float outdoor) {
         this.outdoor = outdoor;
     }
 }
