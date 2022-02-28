@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.cythr</groupId>
     <artifactId>greenhouse-api</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>greenhouse-api</name>
     <description>greenhouse-api</description>
     <properties>
