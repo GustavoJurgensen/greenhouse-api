@@ -14,7 +14,7 @@ public class ParseGreenhouseDataString {
         TimeZone tz= TimeZone.getTimeZone("GMT-3:00");
         DateFormat dateFormat;
         if(datebase.equals("oneDay")){
-            dateFormat = new SimpleDateFormat("HH:mm:ss");
+            dateFormat = new SimpleDateFormat("HH:mm");
         }else{
             dateFormat = new SimpleDateFormat("dd/MM/yy");
         }
