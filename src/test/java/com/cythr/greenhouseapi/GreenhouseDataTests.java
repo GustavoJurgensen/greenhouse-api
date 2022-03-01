@@ -127,6 +127,20 @@ class GreenhouseDataTests {
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].indoor", is(3900.0)));
     }
+    @Test
+    @DisplayName("Get Last Data By Addr")
+    public void getLastDataByAddr() throws Exception{
+
+        Mockito.when(greenhouseDataRepository.findLastByAddr("1")).thenReturn(data3);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/greenhouse/data/last/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].luminosity", is(3800.0)));
+    }
+
     // --------- End GET Methods ---------
 
 

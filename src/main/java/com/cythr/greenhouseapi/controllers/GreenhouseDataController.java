@@ -91,6 +91,12 @@ public class GreenhouseDataController {
         }
         return new ResponseEntity<>(dataList, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/last/{addr}", produces = "application/json")
+    public ResponseEntity<GreenhouseData> greenhouseLastDataByADdr(@PathVariable ("addr") final String addr){
+        final GreenhouseData gh = greenhouseDataRepository.findLastByAddr(addr);
+        return new ResponseEntity<>(gh, HttpStatus.OK);
+    }
     // -------------  End Data Getters ---------------
 
 

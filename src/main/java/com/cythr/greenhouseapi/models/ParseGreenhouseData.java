@@ -30,8 +30,8 @@ public class ParseGreenhouseData {
      * @param indoor Indoor data
      */
     public ParseGreenhouseData(final Date date, final Float indoor) {
-        this.date = date;
-        this.indoor = indoor;
+        this.setDate(date);
+        this.setIndoor(indoor);
     }
 
     /**
@@ -41,9 +41,9 @@ public class ParseGreenhouseData {
      * @param outdoor Outdoor data
      */
     public ParseGreenhouseData(final Date date, final Float indoor, final Float outdoor) {
-        this.date = date;
-        this.indoor = indoor;
-        this.outdoor = outdoor;
+        this.setDate(date);
+        this.setIndoor(indoor);
+        this.setOutdoor(outdoor);
     }
 
     public Date getDate() {

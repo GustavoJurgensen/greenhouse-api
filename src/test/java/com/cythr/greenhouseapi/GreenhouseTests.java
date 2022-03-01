@@ -186,10 +186,10 @@ class GreenhouseTests {
     @Test
     @DisplayName("Delete Greenhouse Success")
     public void deleteGreenhouse_success() throws Exception {
-        Mockito.when(greenhouseRepository.findByAddr(gh2.getAddr())).thenReturn(gh2);
+        Mockito.when(greenhouseRepository.findByAddr(gh1.getAddr())).thenReturn(gh1);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/greenhouse/2")
+                        .delete("/greenhouse/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -208,8 +208,8 @@ class GreenhouseTests {
     @Test
     @DisplayName("Delete Greenhouse by ID Success")
     public void deleteGreenhouseByID_success() throws Exception {
-        Mockito.when(greenhouseRepository.findById(gh2.getId())).thenReturn(Optional.ofNullable(gh2));
-        String url = "/greenhouse/id/"+gh2.getId().toString();
+        Mockito.when(greenhouseRepository.findById(gh1.getId())).thenReturn(Optional.ofNullable(gh1));
+        String url = "/greenhouse/id/"+gh1.getId().toString();
         mockMvc.perform(MockMvcRequestBuilders
                         .delete(url)
                         .contentType(MediaType.APPLICATION_JSON))

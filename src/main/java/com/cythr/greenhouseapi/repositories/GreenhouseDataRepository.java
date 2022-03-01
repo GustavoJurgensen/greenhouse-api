@@ -55,4 +55,7 @@ public interface GreenhouseDataRepository extends CrudRepository<GreenhouseData,
      */
     @Transactional
     void deleteByAddr( String addr);
+
+    @Query(nativeQuery = true, value ="SELECT gh FROM GreenhouseData gh WHERE gh.addr = ?1 ORDER BY gh.date DESC LIMIT 1")
+    GreenhouseData findLastByAddr(@Param("addr") String addr);
 }

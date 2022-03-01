@@ -1,10 +1,12 @@
 package com.cythr.greenhouseapi;
 
+import com.cythr.greenhouseapi.annotations.Generated;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 /**
  * ServletInitializer class
  */
+@Generated
 @SuppressWarnings("PMD")
 public class ServletInitializer extends SpringBootServletInitializer {
 

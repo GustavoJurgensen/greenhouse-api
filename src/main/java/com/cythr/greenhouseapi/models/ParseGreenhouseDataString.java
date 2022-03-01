@@ -39,9 +39,9 @@ public class ParseGreenhouseDataString {
             dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
         }
         dateFormat.setTimeZone(timeZone);
-        this.date = dateFormat.format(date);
-        this.indoor = indoor;
-        this.outdoor = outdoor;
+        this.setDate(dateFormat.format(date));
+        this.setIndoor(indoor);
+        this.setOutdoor(outdoor);
     }
 
     public String getDate() {
