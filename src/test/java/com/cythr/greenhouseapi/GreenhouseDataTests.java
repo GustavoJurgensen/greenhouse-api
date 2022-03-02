@@ -137,8 +137,8 @@ class GreenhouseDataTests {
                         .get("/greenhouse/data/last/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].luminosity", is(3800.0)));
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.luminosity", is(3800.0)));
     }
 
     // --------- End GET Methods ---------
